@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'groovy'
+    id 'maven-publish'
 }
 
 group = 'dev.marcinromanowski'
@@ -32,4 +33,22 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/m-romanowski/testcontainers-kafka-connect"
+            credentials {
+                username "$GITHUB_USERNAME"
+                password "$GITHUB_TOKEN"
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
